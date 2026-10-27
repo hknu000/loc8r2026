@@ -2,6 +2,10 @@ const apiOptions = {
   server: process.env.API_BASE_URL || `http://127.0.0.1:${process.env.PORT || '3000'}`
 };
 
+if (process.env.NODE_ENV === 'production') {
+  apiOptions.server = 'https://loc8r-api-3hno.onrender.com';
+}
+
 const formatDistance = (distance) => {
   if (distance > 1000) {
     return `${(distance / 1000).toFixed(1)}km`;
