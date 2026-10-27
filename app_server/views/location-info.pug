@@ -1,0 +1,56 @@
+extends layout
+include _includes/sharedHTMLfunctions
+
+block content
+  .row.banner
+    .col-12
+      h1= pageHeader.title
+  .row
+    .col-12.col-lg-9
+      .row
+        .col-12.col-md-6
+          p.rating
+            +outputRating(location.rating)
+          p= location.address
+          .card.card-primary
+            .card-body
+              h2.card-title Opening hours
+              each time in location.openingTimes
+                p.card-text
+                  | #{time.days} :
+                  if time.closed
+                    |  closed
+                  else
+                    |  #{time.opening} - #{time.closing}
+          .card.card-primary
+            .card-body
+              h2.card-title Facilities
+              each facility in location.facilities
+                span.badge.bg-warning.text-dark
+                  i.fas.fa-check
+                  | &nbsp;#{facility}
+                | &nbsp;
+        .col-12.col-md-6.location-map
+          .card.card-primary
+            .card-body
+              h2.card-title Location map
+              img.img-fluid.rounded(src=`https://maps.googleapis.com/maps/api/staticmap?center=${location.coords.lat},${location.coords.lng}&zoom=17&size=400x350&sensor=false&markers=${location.coords.lat},${location.coords.lng}&scale=2&key=${encodeURIComponent(googleApiKey)}`)
+      .row
+        .col-12
+          .card.card-primary.review-card
+            .card-body
+              a.btn.btn-primary.float-end(href=`/location/${location._id}/review/new`) Add review
+              h2.card-title Customer reviews
+              each review in location.reviews
+                .row.review.g-0
+                  .col-12.review-header.px-3
+                    span.rating
+                      +outputRating(review.rating)
+                    span.reviewAuthor.ms-2= review.author
+                    small.reviewTimestamp.ms-2
+                      +formatDate(review.createdOn)
+                  .col-12.px-3
+                    p.text-with-linebreaks= review.reviewText
+    .col-12.col-lg-3
+      p.lead #{location.name} #{sidebar.context}
+      p= sidebar.callToAction

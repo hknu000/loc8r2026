@@ -1,0 +1,15 @@
+mixin outputRating(rating)
+  small &nbsp;
+    - for (let i = 1; i <= rating; i++)
+      i.fas.fa-star
+    - for (let i = rating; i < 5; i++)
+      i.far.fa-star
+
+mixin formatDate(dateString)
+  - const date = new Date(dateString);
+  if dateString != null && dateString !== '' && !Number.isNaN(date.getTime())
+    - const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    - const day = date.getDate();
+    - const month = monthNames[date.getMonth()];
+    - const year = date.getFullYear();
+    = `${day} ${month} ${year}`
