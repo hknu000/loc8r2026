@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Loc8r';
+const dbPassword = process.env.MONGODB_PASSWORD;
+if (!dbPassword) {
+  throw new Error('Set MONGODB_PASSWORD in .env or the server environment to connect to MongoDB Atlas.');
+}
+const dbURI = `mongodb+srv://atlasuser:${encodeURIComponent(dbPassword)}@cluster0.srdvdzs.mongodb.net/Loc8r?retryWrites=true&w=majority`;
 let retryTimer;
 let shuttingDown = false;
 
